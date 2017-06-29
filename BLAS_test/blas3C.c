@@ -25,14 +25,14 @@ int main(int argc, char **argv) {
         int tid;
         int nthreads=1;
 	if (nthreads>1)
-//		printf("id\t#OpenMP\tCPU\n");
+		printf("id\t#OpenMP\tCPU\n");
 	#pragma omp parallel shared(nthreads)
 	{
 	        nthreads = omp_get_num_threads();
 	        #pragma omp critical
 	        {
 		        tid = omp_get_thread_num();
-//	                printf("%d\t%d\t%d\n", tid, nthreads, sched_getcpu());
+	                printf("%d\t%d\t%d\n", tid, nthreads, sched_getcpu());
 	        }
 	}
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 
 	/*
 	- Count Total Operations (C <- alpha * AB + beta*C):
-	Operations(AB) = MNK (mult) + MN(K-1) (add)
+	Operations(AB) = MNK (mult) + MN(K-1) (add) 
 	Operation(alpha*AB) = MNK (mult) + MN(K-1) (add) + MN (mult) 
 	Operation(alpha*AB + beta*C) = MNK (mult) + MN(K-1) (add) + MN (mult) + MN (mult) + MN (add)
 	Total = MN(K+2) (mult) + MNK (add)
@@ -63,12 +63,12 @@ int main(int argc, char **argv) {
 	*/
 
 	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-//	printf("Total CPU time: %f\n", time_spent);
+	printf("Total CPU time: %f\n", time_spent);
 //	printf("Execution time: %f\n", time_spent/nthreads);
 	int new_size=size/1000;
 	double gflops=1.0*new_size*new_size*(2*size+2)/(1000.0*time_spent);
-//	printf("Gflops: %f\n", gflops);
-	printf("%f", gflops);
+	printf("Gflops: %f\n", gflops);
+//	printf("%f", gflops);
 
 //	printMatrix(CblasRowMajor, size, size, a, 8, 3, NULL, NULL, NULL, NULL, NULL, "c <- 1.0*a*b+0.0*c = ");
 //	printMatrix(CblasRowMajor, size, size, b, 8, 3, NULL, NULL, NULL, NULL, NULL, "c <- 1.0*a*b+0.0*c = ");

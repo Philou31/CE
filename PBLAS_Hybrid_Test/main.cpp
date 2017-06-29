@@ -6,6 +6,7 @@
 #include <time.h>
 #include <math.h>
 
+using std::cerr; 
 using std::cout; 
 using std::endl; 
 
@@ -42,21 +43,22 @@ int val=0;
 if (size!=1) {
 	if (rank!=0)
 		MPI_Recv(&val, 1, MPI_INTEGER, rank-1, 0, MPI::COMM_WORLD, &status);
-/*	cout << "MPI_proc\tSize\tCPU\tProcessor\n";
-	cout << rank << "\t" << size << "\t" << sched_getcpu() << "\t" << processor_name << "\n";
+	cerr << "MPI_proc\tSize\tCPU\tProcessor\n";
+	cerr << rank << "\t" << size << "\t" << sched_getcpu() << "\t" << processor_name << "\n";
 
-	cout << "MPI_proc\tOMP_thread\tSize\tCPU\n";*/
+	cerr << "MPI_proc\tOMP_thread\tSize\tCPU\n";
 }
 // Info OpenMP
 int nthreads=1;
-#pragma omp parallel
+int tid;
+#pragma omp parallel private(tid)
 {
-        int tid = omp_get_thread_num();
+        tid = omp_get_thread_num();
         nthreads = omp_get_num_threads();
-/*        #pragma omp critical
+        #pragma omp critical
         {
-                cout << rank << "\t" << tid << "\t" << nthreads << "\t" << sched_getcpu() << "\n";
-        }*/
+                cerr << rank << "\t" << tid << "\t" << nthreads << "\t" << sched_getcpu() << "\n";
+        }
 }
 // MPI Synchro
 if (size!=1) {
